@@ -8,332 +8,326 @@
 
 {# We only use grains.filter_by for its merge capability, if that feature
    was available independently, we should use it directly. #}
-{% set vendor_data = salt['grains.filter_by']({
+{% set vendor_data = salt['grains.filter_by'](
+{
     'default': {
-	'debian': {
-	    'repositories': {
-		'default': 'http://deb.debian.org/debian',
-		'security': 'http://security.debian.org',
-		'backports': 'http://backports.debian.org',
-		'archive': 'http://archive.debian.org/debian',
-		'archive-security': 'http://archive.debian.org/debian-security',
-		'extended-lts': 'http://deb.freexian.com/extended-lts',
-	    },
-	    'components': [ 'main', 'contrib', 'non-free' ],
-	    'dists': {
-		'experimental': {
-		    'parent': 'sid',
-		},
-		'sid': {
-		    'aliases': [ 'unstable' ],
-		},
-		'bullseye': {
-		    'aliases': [ 'testing' ],
-		},
-		'bullseye-backports': {
-		    'parent': 'bullseye',
-		},
-		'bullseye-proposed-updates': {
-		    'parent': 'bullseye',
-		},
-		'bullseye-security': {
-		    'parent': 'bullseye',
-		    'repository': 'security',
-		    'apt_codename': 'bullseye-security',
-		},
-		'bullseye-updates': {
-		   'parent': 'bullseye',
-		},
-		'buster': {
-		    'aliases': [ 'stable' ],
-		},
-		'buster-backports': {
-		    'parent': 'buster',
-		},
-		'buster-proposed-updates': {
-		    'parent': 'buster',
-		},
-		'buster-security': {
-		    'parent': 'buster',
-		    'repository': 'security',
-		    'apt_codename': 'buster/updates',
-		},
-		'buster-updates': {
-		    'parent': 'buster',
-		},
-		'stretch': {
-		    'aliases': [ 'oldstable' ],
-		},
-		'stretch-backports': {
-		    'parent': 'stretch',
-		},
-		'stretch-proposed-updates': {
-		    'parent': 'stretch',
-		},
-		'stretch-security': {
-		    'parent': 'stretch',
-		    'repository': 'security',
-		    'apt_codename': 'stretch/updates',
-		},
-		'stretch-updates': {
-		    'parent': 'stretch',
-		},
-		'jessie': {
-		    'aliases': [ 'oldoldstable' ],
-		},
-		'jessie-backports': {
-		    'parent': 'jessie',
-		},
-		'jessie-proposed-updates': {
-		    'parent': 'jessie',
-		},
-		'jessie-security': {
-		    'parent': 'jessie',
-		    'repository': 'security',
-		    'apt_codename': 'jessie/updates',
-		},
-		'jessie-updates': {
-		    'parent': 'jessie',
-		},
-		'jessie-lts': {
-		    'repository': 'extended-lts',
-		    'parent': 'jessie',
-		},
-		'wheezy': {
-		    'repository': 'archive',
-		},
-		'wheezy-backports': {
-		    'repository': 'archive',
-		    'parent': 'wheezy',
-		},
-		'wheezy-backports-sloppy': {
-		    'repository': 'archive',
-		    'parent': 'wheezy',
-		},
-		'wheezy-security': {
-		    'repository': 'archive-security',
-		    'parent': 'wheezy',
-		    'apt_codename': 'wheezy/updates',
-		},
-		'wheezy-lts': {
-		    'repository': 'extended-lts',
-		    'parent': 'wheezy',
-		},
-		'squeeze': {
-		    'repository': 'archive',
-		},
-		'squeeze-lts': {
-		    'repository': 'archive',
-		    'parent': 'squeeze',
-		},
-		'squeeze-proposed-updates': {
-		    'repository': 'archive',
-		    'parent': 'squeeze',
-		},
-		'squeeze-security': {
-		    'repository': 'archive-security',
-		    'parent': 'squeeze',
-		    'apt_codename': 'squeeze/updates',
-		},
-		'lenny': {
-		    'repository': 'archive',
-		    'debootstrap_options': '--no-check-gpg',
-		    'cdebootstrap_options': '--allow-unauthenticated',
-		},
-		'etch': {
-		    'repository': 'archive',
-		    'debootstrap_options': '--no-check-gpg',
-		    'cdebootstrap_options': '--allow-unauthenticated',
-		},
-	    },
-	},
-	'kali': {
-	    'repositories': {
-		'default': 'http://http.kali.org',
-		'security': 'http://security.kali.org',
-		'old': 'http://old.kali.org/kali',
-		'old-security': 'http://old.kali.org/kali-security',
-	    },
-	    'components': [ 'main', 'contrib', 'non-free' ],
-	    'debootstrap_options': '--include=kali-archive-keyring --no-check-gpg',
-	    'debootstrap_script': '/usr/share/debootstrap/scripts/sid',
-	    'cdebootstrap_options': '--include=kali-archive-keyring --allow-unauthenticated ' + suite_config,
-	    'dists': {
-		'kali-current': {},
-		'kali-current-proposed-updates': {
-		    'parent': 'kali-current',
-		},
-		'kali-current-security': {
-		    'parent': 'kali-current',
-		    'apt_codename': 'kali-current/updates',
-		    'repository': 'security',
-		},
-		'kali-bleeding-edge': {
-		    'parent': 'kali-current',
-		},
-		'kali-rolling': {},
-		'kali-rolling-only': {
-		    'parent': 'kali-rolling',
-		},
-		'kali-rolling-security': {
-		    'parent': 'kali-rolling',
-		    'apt_codename': 'kali-rolling/updates',
-		    'repository': 'security',
-		},
-		'kali-dev': {},
-		'kali-dev-only': {
-		    'parent': 'kali-dev',
-		},
-		'moto': {
-		    'repository': 'old',
-		},
-		'moto-security': {
-		    'parent': 'moto',
-		    'apt_codename': 'moto/updates',
-		    'repository': 'old-security',
-		},
-		'sana': {
-		    'aliases': [ 'kali-current' ],
-		},
-		'sana-proposed-updates': {
-		    'aliases': [ 'kali-current-proposed-updates' ],
-		    'parent': 'sana',
-		},
-		'sana-security': {
-		    'aliases': [ 'kali-current-security' ],
-		    'parent': 'sana',
-		    'apt_codename': 'sana/updates',
-		    'repository': 'security',
-		},
-		'safi': {
-		    'aliases': [ 'kali-next' ],
-		},
-		'safi-proposed-updates': {
-		    'aliases': [ 'kali-next-proposed-updates' ],
-		    'parent': 'safi',
-		},
-		'safi-security': {
-		    'aliases': [ 'kali-next-security' ],
-		    'parent': 'safi',
-		    'apt_codename': 'safi/updates',
-		    'repository': 'security',
-		},
-	    },
-	},
-	'ubuntu': {
-	    'repositories': {
-		'default': 'http://archive.ubuntu.com/ubuntu',
-		'archive': 'http://old-releases.ubuntu.com/ubuntu',
-	    },
-	    'components': [ 'main', 'restricted', 'universe', 'multiverse' ],
-	    'cdebootstrap_options': '--allow-unauthenticated',
-	    'dists': {
-		'xenial': {},
-		'xenial-backports': {
-		    'parent': 'xenial',
-		},
-		'xenial-proposed': {
-		    'parent': 'xenial',
-		},
-		'xenial-security': {
-		    'parent': 'xenial',
-		},
-		'xenial-updates': {
-		    'parent': 'xenial',
-		},
-		'wily': {},
-		'wily-backports': {
-		    'parent': 'wily',
-		},
-		'wily-proposed': {
-		    'parent': 'wily',
-		},
-		'wily-security': {
-		    'parent': 'wily',
-		},
-		'wily-updates': {
-		    'parent': 'wily',
-		},
-		'vivid': {},
-		'vivid-backports': {
-		    'parent': 'vivid',
-		},
-		'vivid-proposed': {
-		    'parent': 'vivid',
-		},
-		'vivid-security': {
-		    'parent': 'vivid',
-		},
-		'vivid-updates': {
-		    'parent': 'vivid',
-		},
-		'utopic': {},
-		'utopic-backports': {
-		    'parent': 'utopic',
-		},
-		'utopic-proposed': {
-		    'parent': 'utopic',
-		},
-		'utopic-security': {
-		    'parent': 'utopic',
-		},
-		'utopic-updates': {
-		    'parent': 'utopic',
-		},
-		'trusty': {},
-		'trusty-backports': {
-		    'parent': 'trusty',
-		},
-		'trusty-proposed': {
-		    'parent': 'trusty',
-		},
-		'trusty-security': {
-		    'parent': 'trusty',
-		},
-		'trusty-updates': {
-		    'parent': 'trusty',
-		},
-		'saucy': {},
-		'saucy-backports': {
-		    'parent': 'saucy',
-		},
-		'saucy-proposed': {
-		    'parent': 'saucy',
-		},
-		'saucy-security': {
-		    'parent': 'saucy',
-		},
-		'saucy-updates': {
-		    'parent': 'saucy',
-		},
-		'precise': {},
-		'precise-backports': {
-		    'parent': 'precise',
-		},
-		'precise-proposed': {
-		    'parent': 'precise',
-		},
-		'precise-security': {
-		    'parent': 'precise',
-		},
-		'precise-updates': {
-		    'parent': 'precise',
-		},
-		'lucid': {},
-		'lucid-backports': {
-		    'parent': 'lucid',
-		},
-		'lucid-proposed': {
-		    'parent': 'lucid',
-		},
-		'lucid-security': {
-		    'parent': 'lucid',
-		},
-		'lucid-updates': {
-		    'parent': 'lucid',
-		},
-	    },
-	},
+        'debian': {
+            'repositories': {
+                'default': 'http://deb.debian.org/debian',
+                'security': 'http://security.debian.org',
+                'backports': 'http://backports.debian.org',
+                'archive': 'http://archive.debian.org/debian',
+                'archive-security': 'http://archive.debian.org/debian-security',
+            },
+            'components': [ 'main', 'contrib', 'non-free' ],
+            'dists': {
+                'experimental': {
+                    'parent': 'sid',
+                },
+                'sid': {
+                    'aliases': [ 'unstable' ],
+                },
+                'bullseye': {
+                    'aliases': [ 'testing' ],
+                },
+                'bullseye-backports': {
+                    'parent': 'bullseye',
+                },
+                'bullseye-proposed-updates': {
+                    'parent': 'bullseye',
+                },
+                'bullseye-security': {
+                    'parent': 'bullseye',
+                    'repository': 'security',
+                    'apt_codename': 'bullseye-security',
+                },
+                'bullseye-updates': {
+                    'parent': 'bullseye',
+                },
+                'buster': {
+                    'aliases': [ 'stable' ],
+                },
+                'buster-backports': {
+                    'parent': 'buster',
+                },
+                'buster-proposed-updates': {
+                    'parent': 'buster',
+                },
+                'buster-security': {
+                    'parent': 'buster',
+                    'repository': 'security',
+                    'apt_codename': 'buster/updates',
+                },
+                'buster-updates': {
+                    'parent': 'buster',
+                },
+                'stretch': {
+                    'aliases': [ 'oldstable' ],
+                },
+                'stretch-backports': {
+                    'parent': 'stretch',
+                },
+                'stretch-proposed-updates': {
+                    'parent': 'stretch',
+                },
+                'stretch-security': {
+                    'parent': 'stretch',
+                    'repository': 'security',
+                    'apt_codename': 'stretch/updates',
+                },
+                'stretch-updates': {
+                    'parent': 'stretch',
+                },
+                'jessie': {
+                    'aliases': [ 'oldoldstable' ],
+                },
+                'jessie-backports': {
+                    'parent': 'jessie',
+                },
+                'jessie-proposed-updates': {
+                    'parent': 'jessie',
+                },
+                'jessie-security': {
+                    'parent': 'jessie',
+                    'repository': 'security',
+                    'apt_codename': 'jessie/updates',
+                },
+                'jessie-updates': {
+                    'parent': 'jessie',
+                },
+                'wheezy': {
+                    'repository': 'archive',
+                },
+                'wheezy-backports': {
+                    'repository': 'archive',
+                    'parent': 'wheezy',
+                },
+                'wheezy-backports-sloppy': {
+                    'repository': 'archive',
+                    'parent': 'wheezy',
+                },
+                'wheezy-security': {
+                    'repository': 'archive-security',
+                    'parent': 'wheezy',
+                    'apt_codename': 'wheezy/updates',
+                },
+                'squeeze': {
+                    'repository': 'archive',
+                },
+                'squeeze-lts': {
+                    'repository': 'archive',
+                    'parent': 'squeeze',
+                },
+                'squeeze-proposed-updates': {
+                    'repository': 'archive',
+                    'parent': 'squeeze',
+                },
+                'squeeze-security': {
+                    'repository': 'archive-security',
+                    'parent': 'squeeze',
+                    'apt_codename': 'squeeze/updates',
+                },
+                'lenny': {
+                    'repository': 'archive',
+                    'debootstrap_options': '--no-check-gpg',
+                    'cdebootstrap_options': '--allow-unauthenticated',
+                },
+                'etch': {
+                    'repository': 'archive',
+                    'debootstrap_options': '--no-check-gpg',
+                    'cdebootstrap_options': '--allow-unauthenticated',
+                },
+            },
+        },
+        'kali': {
+            'repositories': {
+                'default': 'http://http.kali.org',
+                'security': 'http://security.kali.org',
+                'old': 'http://old.kali.org/kali',
+                'old-security': 'http://old.kali.org/kali-security',
+            },
+            'components': [ 'main', 'contrib', 'non-free' ],
+            'debootstrap_options': '--include=kali-archive-keyring --no-check-gpg',
+            'debootstrap_script': '/usr/share/debootstrap/scripts/sid',
+            'cdebootstrap_options': '--include=kali-archive-keyring --allow-unauthenticated ' + suite_config,
+            'dists': {
+                'kali-current': {},
+                'kali-current-proposed-updates': {
+                    'parent': 'kali-current',
+                },
+                'kali-current-security': {
+                    'parent': 'kali-current',
+                    'apt_codename': 'kali-current/updates',
+                    'repository': 'security',
+                },
+                'kali-bleeding-edge': {
+                    'parent': 'kali-current',
+                },
+                'kali-rolling': {},
+                'kali-rolling-only': {
+                    'parent': 'kali-rolling',
+                },
+                'kali-rolling-security': {
+                    'parent': 'kali-rolling',
+                    'apt_codename': 'kali-rolling/updates',
+                    'repository': 'security',
+                },
+                'kali-dev': {},
+                'kali-dev-only': {
+                    'parent': 'kali-dev',
+                },
+                'moto': {
+                    'repository': 'old',
+                },
+                'moto-security': {
+                    'parent': 'moto',
+                    'apt_codename': 'moto/updates',
+                    'repository': 'old-security',
+                },
+                'sana': {
+                    'aliases': [ 'kali-current' ],
+                },
+                'sana-proposed-updates': {
+                    'aliases': [ 'kali-current-proposed-updates' ],
+                    'parent': 'sana',
+                },
+                'sana-security': {
+                    'aliases': [ 'kali-current-security' ],
+                    'parent': 'sana',
+                    'apt_codename': 'sana/updates',
+                    'repository': 'security',
+                },
+                'safi': {
+                    'aliases': [ 'kali-next' ],
+                },
+                'safi-proposed-updates': {
+                    'aliases': [ 'kali-next-proposed-updates' ],
+                    'parent': 'safi',
+                },
+                'safi-security': {
+                    'aliases': [ 'kali-next-security' ],
+                    'parent': 'safi',
+                    'apt_codename': 'safi/updates',
+                    'repository': 'security',
+                },
+            },
+        },
+        'ubuntu': {
+            'repositories': {
+                'default': 'http://archive.ubuntu.com/ubuntu',
+                'archive': 'http://old-releases.ubuntu.com/ubuntu',
+            },
+            'components': [ 'main', 'restricted', 'universe', 'multiverse' ],
+            'cdebootstrap_options': '--allow-unauthenticated',
+            'dists': {
+                'eoan': {},
+                'disco': {},
+                'xenial': {},
+                'xenial-backports': {
+                    'parent': 'xenial',
+                },
+                'xenial-proposed': {
+                    'parent': 'xenial',
+                },
+                'xenial-security': {
+                    'parent': 'xenial',
+                },
+                'xenial-updates': {
+                    'parent': 'xenial',
+                },
+                'wily': {},
+                'wily-backports': {
+                    'parent': 'wily',
+                },
+                'wily-proposed': {
+                    'parent': 'wily',
+                },
+                'wily-security': {
+                    'parent': 'wily',
+                },
+                'wily-updates': {
+                    'parent': 'wily',
+                },
+                'vivid': {},
+                'vivid-backports': {
+                    'parent': 'vivid',
+                },
+                'vivid-proposed': {
+                    'parent': 'vivid',
+                },
+                'vivid-security': {
+                    'parent': 'vivid',
+                },
+                'vivid-updates': {
+                    'parent': 'vivid',
+                },
+                'utopic': {},
+                'utopic-backports': {
+                    'parent': 'utopic',
+                },
+                'utopic-proposed': {
+                    'parent': 'utopic',
+                },
+                'utopic-security': {
+                    'parent': 'utopic',
+                },
+                'utopic-updates': {
+                    'parent': 'utopic',
+                },
+                'trusty': {},
+                'trusty-backports': {
+                    'parent': 'trusty',
+                },
+                'trusty-proposed': {
+                    'parent': 'trusty',
+                },
+                'trusty-security': {
+                    'parent': 'trusty',
+                },
+                'trusty-updates': {
+                    'parent': 'trusty',
+                },
+                'saucy': {},
+                'saucy-backports': {
+                    'parent': 'saucy',
+                },
+                'saucy-proposed': {
+                    'parent': 'saucy',
+                },
+                'saucy-security': {
+                    'parent': 'saucy',
+                },
+                'saucy-updates': {
+                    'parent': 'saucy',
+                },
+                'precise': {},
+                'precise-backports': {
+                    'parent': 'precise',
+                },
+                'precise-proposed': {
+                    'parent': 'precise',
+                },
+                'precise-security': {
+                    'parent': 'precise',
+                },
+                'precise-updates': {
+                    'parent': 'precise',
+                },
+                'lucid': {},
+                'lucid-backports': {
+                    'parent': 'lucid',
+                },
+                'lucid-proposed': {
+                    'parent': 'lucid',
+                },
+                'lucid-security': {
+                    'parent': 'lucid',
+                },
+                'lucid-updates': {
+                    'parent': 'lucid',
+                },
+            },
+        },
     },
 }, merge=salt['pillar.get']('debootstrap:vendor', {}),
 default='default') %}
